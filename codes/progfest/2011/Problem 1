@@ -1,0 +1,113 @@
+/*
+   Basic solution for Progfest 2011 Problem 1
+   
+   Thing to consider: The problem says each reviewer has rated
+      six movies with ratings from 1 to 5, is it safe to assume
+      the user input is an int?
+*/
+
+import java.util.*;
+
+public class Movie
+{
+	public static int[] jasonRatings = {3,1,5};  // Jason's ratings for the first 3 movies
+	public static int[] davidRatings = {4,2,1};  // David's ratings for the first 3 movies
+	public static int[] keenanRatings = {3,1,2}; // Keenan's ratings for the first 3 movies
+	public static int[] derekRatings = {5,1,4};  // Derek's ratings for the first 3 movies
+	
+	public static int x2;   // User's rating for the first movie
+	public static int y2;   // User's rating for the second movie
+	public static int z2;   // User's rating for the third movie
+	
+	public static Scanner input = new Scanner(System.in);
+	
+	public static double minDistance;      // Minimum distance for movie ratings between professional and user
+	public static String reviewer = " ";   // The name of the professional that has ratings most similar to user
+	
+	public static void main(String[] args)
+	{	
+		System.out.print("Enter user ratings for Inception, Toy Story 3, and Scott Pilgrim: ");
+		
+		Scanner line = new Scanner(input.nextLine());
+		
+		x2 = line.nextInt();
+		y2 = line.nextInt();
+		z2 = line.nextInt();
+
+		compareAll();     // Compares the user's ratings to each professional
+      printReviewer();  // Prints the name professional reviewer with reviews closest to user
+   }
+	
+   // Jason is the first professional reviewer the user is compared with
+   // and is the default minimum
+	public static void compareWithJason()
+	{		
+		double distance = Math.sqrt(Math.pow(x2-jasonRatings[0], 2)+Math.pow(y2-jasonRatings[1],2)+Math.pow(z2-jasonRatings[2],2));
+		minDistance = distance;
+		reviewer = "Jason";
+	}
+   
+	// User ratings are compared with David's ratings
+   // Minimum distance is compared with current distance
+   // If current distance is less, minimum is set to current
+   // and reviewer string is updated
+	public static void compareWithDavid()
+	{
+		double distance = Math.sqrt(Math.pow(x2-davidRatings[0], 2)+Math.pow(y2-davidRatings[1],2)+Math.pow(z2-davidRatings[2],2));
+		if(distance < minDistance)
+		{
+			minDistance = distance;
+			reviewer = "David";
+		}
+      else if(distance == minDistance)
+      {
+         reviewer += " and David";
+      }
+	}
+   
+   // User ratings are compared with Keenan's ratings
+	public static void compareWithKeenan()
+	{
+		double distance = Math.sqrt(Math.pow(x2-keenanRatings[0], 2)+Math.pow(y2-keenanRatings[1],2)+Math.pow(z2-keenanRatings[2],2));
+		if(distance < minDistance)
+		{
+			minDistance = distance;
+			reviewer = "Keenan";
+		}
+      else if(distance == minDistance)
+      {
+         reviewer += " and Keenan";
+      }
+	}
+	// User ratings are compared with Derek's ratings
+	public static void compareWithDerek()
+	{
+		double distance = Math.sqrt(Math.pow(x2-derekRatings[0], 2)+Math.pow(y2-derekRatings[1],2)+Math.pow(z2-derekRatings[2],2));
+		if(distance < minDistance)
+		{
+			minDistance = distance;
+			reviewer = "Derek";
+		}
+      else if(distance == minDistance)
+      {
+         reviewer += " and Derek";
+      }
+	}
+   
+	// All the compare methods are called to determine
+   // which reviewer has a minimum rating distance difference
+	public static void compareAll()
+	{
+		compareWithJason();
+		compareWithDavid();
+		compareWithKeenan();
+		compareWithDerek();   
+	}
+   
+   // Outputs the reviewer with the current minimum rating distance
+   // Keep in mind that Jason is set as the default minimum
+   public static void printReviewer()
+   {
+      System.out.println(reviewer); 
+   }
+}
