@@ -1,0 +1,102 @@
+/*
+   Problem: Progfest 2010 Problem 2
+   
+   This problem is not as complicated as the other problems,
+   but it is a tweak on one of the prime problems. There are two menu
+   options (MAX and ALL) and output is dependent on the option selected.
+   
+   Max outputs only the largest prime number up to x (user input), inclusive.
+   All outputs all the prime numbers up to x, inclusive.
+   
+   I tested the problem with the prime number 15485863 and it seems to work,
+   though the output for the all option takes a bit of time.
+   
+   I'm a little tired so sorry in advance if the code is ugly.
+*/
+import java.util.*;
+
+public class MaxAllPrime
+{
+   public static int maxPrime = 2;        // The default maxPrime is 2
+   public static boolean[] primes;        // Declare an array called primes
+   
+   public static void main(String[] args)
+   {
+      Scanner input = new Scanner(System.in);
+      
+      int x;                              // Variable x for user input
+
+      x = input.nextInt();                // Input integer x, prime numbers will be calculated up to x
+      primes = new boolean[x+1];          // Array is initialized to include x as the last element
+      String option = input.next();       // Accept String input for the options [MAX or ALL]
+      String optionUpper = option.toUpperCase();   // Convert to uppercase, in case they typed max or all
+      
+      boolean optionMax = (optionUpper.equals("MAX"));
+      boolean optionAll = (optionUpper.equals("ALL"));
+      
+      if(optionMax)
+         max();
+      if(optionAll)
+         all();
+   }
+   
+   // The max method calls the primeFill method (which fills the primes array)
+   // then calls the findMaxPrime method (which uses the primes array to determine
+   // the largest prime number) and the maxPrime is output
+   public static void max()
+   {
+      primeFill();
+      
+      findMaxPrime();
+      
+      System.out.println(maxPrime);
+   }
+   
+   // The all method calls the primeFill method (which fills the array),
+   // then iterates through the array to find true boolean values
+   // if the value is true (that means it is prime) so that index is output
+   public static void all()
+   {
+      primeFill();
+
+      for (int i = 2; i < primes.length; i++)
+      {
+         if(primes[i])
+         {
+            System.out.print(i + " ");
+         }
+      }  
+   }
+   
+   // Fills the prime array with boolean values
+   // boolean value determined by if index value is prime or not
+   public static void primeFill()
+   {   
+      Arrays.fill(primes, Boolean.TRUE);
+      
+      primes[0] = false;
+      primes[1] = false;
+      
+      for(int i = 2; i < primes.length; i++)
+      {
+         if(primes[i])
+         {
+            for(int j = 2; i*j < primes.length; j++)
+            {
+               primes[i*j]=false;
+            }
+         }
+      }
+   }
+   
+   // maxPrime is determined by iterating through the primes array
+   // values that are prime are set as the new maxPrime
+   public static void findMaxPrime()
+   {
+      for(int i = 2; i < primes.length; i++)
+      {
+         if(primes[i])
+               maxPrime = i;
+      }
+   }
+}

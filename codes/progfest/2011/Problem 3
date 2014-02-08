@@ -1,0 +1,129 @@
+/*
+   The Problem: 2011 Progfest Problem 3
+   
+   This is what I believe is a working solution to the Emirps problem
+   from problem 3 of the 2011 problem set.
+   
+   It basically creates a really large array called primes that
+   holds boolean values for whether the index is prime. 
+   
+   The initialFill method fills the primes array with appropriate
+   determination of whether numbers are prime by using the fact
+   that all multiples of prime numbers are not going to be prime.
+      This eliminates all even numbers (since 2 is a prime), 
+      which cuts the time cost considerably.
+      
+   The isPrime method is used (after the primes array is filled)
+   to determine whether a number is prime or not by using that number
+   as the index value for the primes array. The isPrime method is used
+   to help determine which numbers can be Emirps.
+   
+   The isEmirps method checks whether the number entered is a prime.
+   If it it, then it uses StringBuilder to reverse the number and 
+   then converts that StringBuilder to a String, which is then converted
+   to an int. If that int is a prime, then, the number is an emirp, 
+   so it is stored as the next value in the emirps array.
+   
+   The findFirst100Emirps method uses the isEmirps method to fill the
+   emirps array with the first 100 emirps by using a counter-controlled
+   loop.
+   
+   The printFirst100Emirps method formats the output of the first 100
+   emirps to fit the specifications in the problem.
+   
+*/
+
+import java.util.*;
+
+public class Emirps
+{
+   public static boolean[] primes = new boolean[10000];   // Primes array stores booleans (true or false) for whether index value is prime or not
+   public static int[] emirps = new int[100];            
+   
+   public static void main(String[] args)
+   {   
+      initialFill();
+      findFirst100Emirps();
+      printFirst100Emirps();  
+   }
+   
+   // Fills the primes array with initial values of true
+   // Makes all multiples of prime numbers false
+   // Only checks the values that are not eliminated as primes
+   public static void initialFill()
+   {
+      Arrays.fill(primes, Boolean.TRUE);     // Assume all integers are prime
+      
+      primes[0] = false;      // We know 1 and 0 are not primes
+      primes[1] = false;
+      
+      for(int i=2; i < primes.length(); i++)
+      {
+         // If the number is prime,
+         // then go through all of its multiples and make their values false
+         if(primes[i])
+         {
+            for(int j=2; i*j < primes.length();j++)
+            {
+               primes[i*j] = false;
+            }
+         }
+      }
+   }
+   
+   // Determines whether an integer is prime by using the integer
+   // as the index value for the primes array
+   public static boolean isPrime(int n)
+   {
+      return primes[n];
+   }
+   
+   // Determines whether an integer is an emirp
+   public static boolean isEmirps(int n)
+   {
+      if(prime[n])
+      {
+         StringBuilder r = new StringBuilder();
+         String numberString = Integer.toString(n);      // Converts the prime to a String, could have also used String.valueOf(intVariable)
+         r.append(numberString);                         // Add the number at the beginning of the StringBuilder
+         r.reverse();                                    // Reverse the number
+         String reversalString = r.toString();           // Convert StringBuilder to a String
+         int reverse = Integer.parseInt(reversalString); // Converts back to integer
+         if(primes.get(reverse))                // Checks to see if the reverse is a prime
+            return true;
+         else
+            return false;
+      }
+      else
+         return false;
+   }
+   
+   // Determines which values are the first 100 emirps
+   // and stores them in an array
+   public static void findFirst100Emirps()
+   {  
+      int i = 0;
+      for(int j = 2 ; j < primes.length() && i < 100; j++)
+      {
+            if(isEmirps(j))
+            {
+               emirps[i]= j;
+               i++;
+            }
+      }
+   }
+   
+   // Uses the emirps array (which has stored emirps values)
+   // to output the values. Formats values to be displayed
+   // with 3 spaces between numbers and a blank line between 
+   // a line of numbers
+   public static void printFirst100Emirps()
+   {  
+      for(int i = 0; i < 100; i++)
+      {
+         System.out.printf("%d   ", emirps[i]);
+         if((i+1)%10==0 && i!=0)
+            System.out.println("\n");
+      }
+   }
+}
