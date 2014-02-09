@@ -57,7 +57,7 @@
 import java.util.Scanner;
 import java.util.Arrays;
 
-public class Matchsticks {
+public class Problem3 {
    static int[] cost = {6, 2, 5, 5, 4, 5, 6, 3, 7, 5};
    static long[][] table = new long[81][41];
 
